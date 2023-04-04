@@ -1,6 +1,6 @@
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
-import MarvelService from "../../services/MarvelService";
+import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spiner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 
@@ -8,43 +8,28 @@ import {useState, useEffect} from "react";
 
 const RandomChar = () => {
 
-    const [char, setChar] = useState({}),
-          [loading, setLoading] = useState(true),
-          [error, setError] = useState(false);
+    const [char, setChar] = useState({});
 
-   const marvelService = new MarvelService();
+   const {loading, error, getCharacter, clearError} = useMarvelService();
 
    useEffect(() => {
        updateChar();
-       // const timeId = setInterval(updateChar, 3000);
+       const timeId = setInterval(updateChar, 60000);
 
-       // return () => {
-       //     clearInterval(timeId);
-       // }
+       return () => {
+           clearInterval(timeId);
+       }
    }, []);
 
     const onCharacterUploaded = (char) => {
         setChar(char);
-        setLoading(false);
-        setError(false);
-    }
-
-    const onCharLoading = () => {
-        setLoading(true);
-        setError(false);
-    }
-
-    const onError = () => {
-        setLoading(false)
-        setError(true)
     }
 
     const updateChar = () => {
+        clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        onCharLoading();
-        marvelService.getCharacter(id)
-            .then(onCharacterUploaded)
-            .catch(onError);
+        getCharacter(id)
+            .then(onCharacterUploaded);
     }
 
     const spiner = loading ? <Spinner/> : null;
@@ -88,9 +73,13 @@ const View = ({char}) => {
         }
     }
 
+    let imgStyle = {'objectFit' : 'cover'};
+    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        imgStyle = {'objectFit' : 'contain'};
+    }
     return (
         <div className="randomchar__block">
-            <img style={thumbnail.indexOf('image_not_available') > 0 ? {objectFit: 'contain'} : {objectFit: 'cover'}} src={thumbnail} alt="Random character" className="randomchar__img"/>
+            <img style={imgStyle} src={thumbnail} alt="Random character" className="randomchar__img"/>
             <div className="randomchar__info">
                 <p className="randomchar__name">{name}</p>
                 <p className="randomchar__descr">

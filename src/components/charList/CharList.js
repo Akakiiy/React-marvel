@@ -1,58 +1,42 @@
 import PropTypes from 'prop-types';
-import MarvelService from "../../services/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 
 import Spinner from "../spiner/Spinner";
 import './charList.scss';
 
 import {useState, useEffect, useRef} from "react";
+import useMarvelService from "../../services/MarvelService";
 
 const CharList = (props) => {
 
     const [characterList, setCharacterList] = useState([]),
-          [loading, setLoading] = useState(true),
-          [error, setError] = useState(false),
           [newItemLoading, setNewItemLoading] = useState(false),
           [offset, setOffset] = useState(210),
           [maxOffset, setMaxOffset] = useState(1562);
 
-
-    const marvelService = new MarvelService();
+    const {getAllCharacters, error, loading} = useMarvelService();
 
     useEffect(() => {
-        onRequest();
+        onRequest(offset, true);
     }, []);
 
-    const onRequest = (offset) => {
-        onLoadingNewCharacters();
-
-        marvelService.getAllCharacters(offset)
-            .then(onCharactersInState)
-            .catch(onError);
+    const onRequest = (offset, initial) => {
+        initial ? setNewItemLoading(false) : setNewItemLoading(true);
+        getAllCharacters(offset)
+            .then(onCharactersInState);
     }
 
     const onCharactersInState = (res) => {
         setCharacterList(characterList => [...characterList, ...res]);
-        setLoading(false);
-        setError(false);
         setNewItemLoading(false);
         setOffset(offset => offset + 9);
-    }
-
-    const onLoadingNewCharacters = () => {
-            setNewItemLoading(true);
-    }
-
-    const onError = () => {
-        setError(true);
-        setLoading(false);
     }
 
     const itemRefs = useRef([]);
 
     const focusOnItem = (id) => {
-        itemRefs.current.forEach(item => item.classList.remove('char__item-selected'));
-        itemRefs.current[id].classList.add('char__item-selected');
+        itemRefs.current.forEach(item => item.classList.remove('char__item_selected'));
+        itemRefs.current[id].classList.add('char__item_selected');
         itemRefs.current[id].focus();
     }
 
@@ -70,7 +54,7 @@ const CharList = (props) => {
                     }}
                     onKeyPress={(e) => {
                         if (e.key === ' ' || e.key === "Enter") {
-                            props.onCharSelected(item.id);
+                            props.onSelectedChar(item.id);
                             focusOnItem(i);
                         }
                     }}>
@@ -92,14 +76,13 @@ const CharList = (props) => {
     const items = renderItems(characterList);
 
     const errorMessage = error ? <ErrorMessage/> : null,
-          loadingMessage = loading ? <Spinner/> : null,
-          content = !(loading || error) ? items : null;
+          loadingMessage = loading && !newItemLoading ? <Spinner/> : null;
 
     return (
         <div className="char__list">
             {errorMessage}
             {loadingMessage}
-            {content}
+            {items}
             <button
                 style={{'display': offset >= maxOffset ? 'none' : 'block'}}
                 disabled={newItemLoading}
