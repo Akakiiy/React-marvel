@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import ErrorMessage from "../errorMessage/ErrorMessage";
 
 import Spinner from "../spiner/Spinner";
@@ -49,12 +48,12 @@ const CharList = (props) => {
                     ref={el => itemRefs.current[i] = el}
                     key={item.id}
                     onClick={() => {
-                        props.onSelectedChar(item.id);
+                        props.onCharSelected(item.id);
                         focusOnItem(i);
                     }}
                     onKeyPress={(e) => {
                         if (e.key === ' ' || e.key === "Enter") {
-                            props.onSelectedChar(item.id);
+                            props.onCharSelected(item.id);
                             focusOnItem(i);
                         }
                     }}>
@@ -93,10 +92,5 @@ const CharList = (props) => {
         </div>
     )
 }
-
-CharList.propTypes = {
-    onSelectedChar: PropTypes.func.isRequired,
-}
-
 
 export default CharList;
