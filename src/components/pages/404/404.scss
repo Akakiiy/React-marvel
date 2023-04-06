@@ -1,0 +1,30 @@
+.page404 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__img {
+    height: 400px;
+  }
+  &__title {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 32px;
+    color: #000000;
+    margin-left: 40px;
+  }
+  &__back {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 32px;
+    color: #000000;
+    margin-top: 30px;
+    margin-left: 40px;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      color: #9F0013;
+      transform: translateY(-5px);
+    }
+  }
+}
