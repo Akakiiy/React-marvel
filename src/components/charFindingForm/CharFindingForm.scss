@@ -1,0 +1,66 @@
+@import '../../style/variables.scss';
+
+.form {
+  display: block;
+  &-container {
+    width: 425px;
+    margin-top: 30px;
+    padding: 25px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  }
+  &-label {
+    margin-bottom: 17px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    color: #000000;
+  }
+  &-input {
+    display: inline-block;
+    margin-right: 24px;
+    padding: 10px;
+    width: 250px;
+    height: 38px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  &-error {
+    width: 375px;
+    margin-top: 25px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    color: #9F0013;
+  }
+}
+
+.char__search {
+  &-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 22px;
+  }
+  &-critical-error {
+    margin-top: 20px;
+  }
+  &-success {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    color: #03710E;
+  }
+  &-error {
+    margin-top: 25px;
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    color: #9F0013;
+  }
+}

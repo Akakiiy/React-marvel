@@ -13,13 +13,14 @@ const CharList = (props) => {
           [offset, setOffset] = useState(210),
           [maxOffset, setMaxOffset] = useState(1562);
 
-    const {getAllCharacters, error, loading} = useMarvelService();
+    const {getAllCharacters, error, loading, clearError} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
     }, []);
 
     const onRequest = (offset, initial) => {
+        clearError();
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset)
             .then(onCharactersInState);
